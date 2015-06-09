@@ -595,11 +595,12 @@ begin
     UART_LSR: process (CLK, iRST)
     begin
         if (iRST = '1') then
-            iLSR_OE     <= '0';
-            iLSR_PE     <= '0';
-            iLSR_FE     <= '0';
-            iLSR_BI     <= '0';
-            iFECounter  <= 0;
+            iLSR_OE      <= '0';
+            iLSR_PE      <= '0';
+            iLSR_FE      <= '0';
+            iLSR_BI      <= '0';
+            iFECounter   <= 0;
+            iLSR_FIFOERR <= '0';
         elsif (CLK'event and CLK = '1') then
             -- Overrun error
             if ((iFCR_FIFOEnable = '0' and iLSR_DR = '1' and iRXFinished = '1') or
