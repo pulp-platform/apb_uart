@@ -94,7 +94,8 @@ begin
     FF_MEM: process (RST, CLK)
     begin
         if (RST = '1') then
-            --iFIFOMem(2**SIZE_E-1 downto 0) <= (others => (others => '0'));
+            iFIFOMem(2**SIZE_E-1 downto 0) <= (others => (others => '0'));
+            Q <= (others => '0');
         elsif (CLK'event and CLK = '1') then
             if (WRITE = '1' and iFULL = '0') then
                 iFIFOMem(to_integer(iWRAddr(SIZE_E-1 downto 0))) <= D;
