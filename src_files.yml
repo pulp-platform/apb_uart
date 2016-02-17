@@ -1,5 +1,4 @@
 apb_uart:
-  vhdl: true
   files: [
     apb_uart.vhd,
     slib_clock_div.vhd,
