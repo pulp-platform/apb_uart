@@ -51,7 +51,7 @@ module uart_receiver(
 /* design uart_receiver */
 /* architecture rtl */
 typedef enum {FALSE,TRUE} bool_t; // 527
-typedef enum [2:0] {IDLE,
+typedef enum logic [2:0] {IDLE,
 START,
 DATA,
 PAR,
