@@ -410,7 +410,7 @@ begin
     UART_DLR: process (CLK, iRST)
     begin
         if (iRST = '1') then
-            iDLL <= (others => '0');
+            iDLL <= std_logic_vector(to_unsigned(1,iDLL'length));
             iDLM <= (others => '0');
         elsif (CLK'event and CLK = '1') then
             if (iDLLWrite = '1') then

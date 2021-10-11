@@ -51,12 +51,12 @@ begin
             if (CLEAR = '1') then
                 iCounter <= (others => '0');
             elsif (CE = '1') then
-                iCounter <= iCounter + 1;
+                iCounter <= iCounter - 1;
             end if;
 
             BAUDTICK <= '0';
-            if (iCounter = unsigned(DIVIDER)) then
-                iCounter <= (others => '0');
+            if (unsigned(iCounter) = 0) then
+                iCounter <= unsigned(DIVIDER) - 1;
                 BAUDTICK <= '1';
             end if;
         end if;
