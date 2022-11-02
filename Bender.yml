@@ -5,6 +5,10 @@ package:
       "Jonathan Kimmitt"
     ]
 
+dependencies:
+  apb: { git: "https://github.com/pulp-platform/apb", version: 0.2.1 }
+  register_interface: { git: "https://github.com/pulp-platform/register_interface", version: 0.3.5 }
+
 sources:
   - src/slib_clock_div.sv
   - src/slib_counter.sv
@@ -19,3 +23,4 @@ sources:
   - src/uart_transmitter.sv
   - src/apb_uart.sv
   - src/apb_uart_wrap.sv
+  - src/reg_uart_wrap.sv
