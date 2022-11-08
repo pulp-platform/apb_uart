@@ -7,7 +7,7 @@ package:
 
 dependencies:
   apb: { git: "https://github.com/pulp-platform/apb", version: 0.2.1 }
-  register_interface: { git: "https://github.com/pulp-platform/register_interface", version: v0.3.6 }
+  register_interface: { git: "https://github.com/pulp-platform/register_interface", version: 0.3.6 }
 
 sources:
   - src/slib_clock_div.sv
