@@ -124,7 +124,6 @@ reg iLSR_PE; // 612
 reg iLSR_FE; // 612
 reg iLSR_BI; // 612
 reg iLSR_THRE; // 612
-reg iLSR_THRNF; // 612
 reg iLSR_TEMT; // 612
 reg iLSR_FIFOERR; // 612
 reg iMSR_dCTS; // 612
@@ -523,14 +522,13 @@ assign     iLSR[1]         = iLSR_OE;
 assign     iLSR[2]         = iLSR_PE;
 assign     iLSR[3]         = iLSR_FE;
 assign     iLSR[4]         = iLSR_BI;
-assign     iLSR[5]         = iLSR_THRNF;
+assign     iLSR[5]         = iLSR_THRE;
 assign     iLSR[6]         = iLSR_TEMT;
 assign     iLSR[7]         = iFCR_FIFOEnable && iLSR_FIFOERR;
    
 assign /*903*/ iLSR_DR = iRXFIFOEmpty ==  1'b0 | iRXFIFOWrite ==  1'b1 ?  1'b1 :   1'b0; // 905
 assign /*903*/ iLSR_THRE = iTXFIFOEmpty ==  1'b1 ?  1'b1 :   1'b0; // 905
 assign /*903*/ iLSR_TEMT = iTXRunning ==  1'b0 && iLSR_THRE ==  1'b1 ?  1'b1 :   1'b0; // 905
-assign /*903*/ iLSR_THRNF = ((iFCR_FIFOEnable ==  1'b0 && iTXFIFOEmpty ==  1'b1) | (iFCR_FIFOEnable ==  1'b1 && iTXFIFOFull ==  1'b0)) ?  1'b1 :   1'b0; // 905
 assign /*903*/ iMSR_CTS = (iMCR_LOOP ==  1'b1 && iRTS ==  1'b1) | (iMCR_LOOP ==  1'b0 && iCTSn ==  1'b0) ?  1'b1 :   1'b0; // 905
 assign /*903*/ iMSR_DSR = (iMCR_LOOP ==  1'b1 && iMCR_DTR ==  1'b1) | (iMCR_LOOP ==  1'b0 && iDSRn ==  1'b0) ?  1'b1 :   1'b0; // 905
 assign /*903*/ iMSR_RI = (iMCR_LOOP ==  1'b1 && iMCR_OUT1 ==  1'b1) | (iMCR_LOOP ==  1'b0 && iRIn ==  1'b0) ?  1'b1 :   1'b0; // 905
