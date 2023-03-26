@@ -272,7 +272,6 @@ architecture rtl of apb_uart is
     signal iLSR_FE          : std_logic;                        -- LSR: Framing error
     signal iLSR_BI          : std_logic;                        -- LSR: Break Interrupt
     signal iLSR_THRE        : std_logic;                        -- LSR: Transmitter holding register empty
-    signal iLSR_THRNF       : std_logic;                        -- LSR: Transmitter holding register not full
     signal iLSR_TEMT        : std_logic;                        -- LSR: Transmitter empty
     signal iLSR_FIFOERR     : std_logic;                        -- LSR: Error in receiver FIFO
 
@@ -665,13 +664,12 @@ begin
     iLSR(2)         <= iLSR_PE;
     iLSR(3)         <= iLSR_FE;
     iLSR(4)         <= iLSR_BI;
-    iLSR(5)         <= iLSR_THRNF;
+    iLSR(5)         <= iLSR_THRE;
     iLSR(6)         <= iLSR_TEMT;
     iLSR(7)         <= '1' when iFCR_FIFOEnable = '1' and iLSR_FIFOERR = '1' else '0';
     iLSR_DR         <= '1' when iRXFIFOEmpty = '0' or iRXFIFOWrite = '1' else '0';
     iLSR_THRE       <= '1' when iTXFIFOEmpty = '1' else '0';
     iLSR_TEMT       <= '1' when iTXRunning = '0' and iLSR_THRE = '1' else '0';
-    iLSR_THRNF      <= '1' when ((iFCR_FIFOEnable = '0' and iTXFIFOEmpty = '1') or (iFCR_FIFOEnable = '1' and iTXFIFOFull = '0')) else '0';
 
     -- Modem status register
     iMSR_CTS <= '1' when (iMCR_LOOP = '1' and iRTS = '1')      or (iMCR_LOOP = '0' and iCTSn = '0') else '0';
