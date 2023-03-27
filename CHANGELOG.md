@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 0.2.1 - 2023-03-27
+
+### Fixed
+- LSR.THRE flag now shows `empty` instead of `not full` status of transmit holding register.
+
 ## 0.2.0 - 2022-11-09
 
 ### Added
