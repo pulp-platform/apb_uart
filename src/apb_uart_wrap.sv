@@ -1,32 +1,16 @@
-//
-// UART 16750
-//
-// Author: Paul Scheffler <paulsc@iis.ee.ethz.ch>
-//
-// Description: This wrapper adapts the flat interface of apb_uart to
-//              an interface using passed structs for APB and port
-//              names aligned with our style guide. Note that your
-//              APB must have a datawidth of 32 to match the IP.
-//
-// This code is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-//
-// This code is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public
-// License along with this library; if not, write to the
-// Free Software  Foundation, Inc., 59 Temple Place, Suite 330,
-// Boston, MA  02111-1307  USA
-//
+// Copyright 2025 ETH Zurich and University of Bologna.
+// Solderpad Hardware License, Version 0.51, see LICENSE for details.
+// SPDX-License-Identifier: SHL-0.51
 
+// Paul Scheffler <paulsc@iis.ee.ethz.ch>
+// Nils Wistoff <nwistoff@iis.ee.ethz.ch>
+
+`include "obi/typedef.svh"
+
+// A UART with APB struct ports.
 module apb_uart_wrap #(
-    parameter type apb_req_t = logic,
-    parameter type apb_rsp_t = logic
+  parameter type apb_req_t = logic,
+  parameter type apb_rsp_t = logic
 ) (
   input  logic clk_i,
   input  logic rst_ni,
@@ -49,28 +33,53 @@ module apb_uart_wrap #(
   output logic sout_o   // TX
 );
 
-  apb_uart i_apb_uart (
-    .CLK      ( clk_i   ),
-    .RSTN     ( rst_ni  ),
-    .PSEL     ( apb_req_i.psel        ),
-    .PENABLE  ( apb_req_i.penable     ),
-    .PWRITE   ( apb_req_i.pwrite      ),
-    .PADDR    ( apb_req_i.paddr[4:2]  ),
-    .PWDATA   ( apb_req_i.pwdata      ),
-    .PRDATA   ( apb_rsp_o.prdata      ),
-    .PREADY   ( apb_rsp_o.pready      ),
-    .PSLVERR  ( apb_rsp_o.pslverr     ),
-    .INT      ( intr_o  ),
-    .OUT1N    ( out1_no ),
-    .OUT2N    ( out2_no ),
-    .RTSN     ( rts_no  ),
-    .DTRN     ( dtr_no  ),
-    .CTSN     ( cts_ni  ),
-    .DSRN     ( dsr_ni  ),
-    .DCDN     ( dcd_ni  ),
-    .RIN      ( rin_ni  ),
-    .SIN      ( sin_i   ),
-    .SOUT     ( sout_o  )
+  localparam obi_pkg::obi_cfg_t ObiCfg = obi_pkg::obi_default_cfg(
+      $bits(apb_req_i.paddr),
+      32,
+      1,
+      obi_pkg::ObiMinimalOptionalConfig
+  );
+
+  `OBI_TYPEDEF_DEFAULT_ALL(obi, ObiCfg)
+  obi_req_t obi_req;
+  obi_rsp_t obi_rsp;
+
+  apb_to_obi #(
+    .ObiCfg    ( ObiCfg    ),
+    .apb_req_t ( apb_req_t ),
+    .apb_rsp_t ( apb_rsp_t ),
+    .obi_req_t ( obi_req_t ),
+    .obi_rsp_t ( obi_rsp_t )
+  ) i_apb_to_obi (
+    .clk_i     ( clk_i     ),
+    .rst_ni    ( rst_ni    ),
+    .apb_req_i ( apb_req_i ),
+    .apb_rsp_o ( apb_rsp_o ),
+    .obi_req_o ( obi_req   ),
+    .obi_rsp_i ( obi_rsp   )
+  );
+
+  obi_uart #(
+    .ObiCfg    ( ObiCfg    ),
+    .obi_req_t ( obi_req_t ),
+    .obi_rsp_t ( obi_rsp_t )
+  ) i_obi_uart (
+    .clk_i     ( clk_i   ),
+    .rst_ni    ( rst_ni  ),
+    .obi_req_i ( obi_req ),
+    .obi_rsp_o ( obi_rsp ),
+    .irq_o     ( intr_o  ),
+    .irq_no    (         ),
+    .rxd_i     ( sin_i   ),
+    .txd_o     ( sout_o  ),
+    .cts_ni    ( cts_ni  ),
+    .dsr_ni    ( dsr_ni  ),
+    .ri_ni     ( rin_ni  ),
+    .cd_ni     ( dcd_ni  ),
+    .rts_no    ( rts_no  ),
+    .dtr_no    ( dtr_no  ),
+    .out1_no   ( out1_no ),
+    .out2_no   ( out2_no )
   );
 
 endmodule
