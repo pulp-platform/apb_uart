@@ -11,7 +11,7 @@ package:
 dependencies:
   apb:                { git: "https://github.com/pulp-platform/apb.git",                version: 0.2.4 }
   obi:                { git: "https://github.com/pulp-platform/obi.git",                version: 0.1.7 }
-  obi_peripherals:    { git: "https://github.com/pulp-platform/obi_peripherals.git",    version: 0.1.0 }
+  obi_peripherals:    { git: "https://github.com/pulp-platform/obi_peripherals.git",    version: 0.1.1 }
   register_interface: { git: "https://github.com/pulp-platform/register_interface.git", version: 0.3.6 }
 
 sources:
