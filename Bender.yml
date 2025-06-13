@@ -1,0 +1,20 @@
+# Copyright 2025 ETH Zurich and University of Bologna.
+# Solderpad Hardware License, Version 0.51, see LICENSE for details.
+# SPDX-License-Identifier: SHL-0.51
+
+package:
+  name: apb_uart
+  authors:
+    - "Nils Wistoff <nwistoff@iis.ee.ethz.ch>"
+    - "Paul Scheffler <paulsc@iis.ee.ethz.ch>"
+
+dependencies:
+  apb:                { git: "https://github.com/pulp-platform/apb.git",                version: 0.2.4 }
+  obi:                { git: "https://github.com/pulp-platform/obi.git",                version: 0.1.7 }
+  obi_peripherals:    { git: "https://github.com/pulp-platform/obi_peripherals.git",    version: 0.1.0 }
+  register_interface: { git: "https://github.com/pulp-platform/register_interface.git", version: 0.3.6 }
+
+sources:
+  - src/apb_uart.sv
+  - src/apb_uart_wrap.sv
+  - src/reg_uart_wrap.sv
