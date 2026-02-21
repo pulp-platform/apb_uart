@@ -54,6 +54,7 @@ module reg_uart_wrap #(
   );
 
   apb_uart_wrap #(
+    .AddrWidth ( AddrWidth ),
     .apb_req_t ( apb_req_t ),
     .apb_rsp_t ( apb_resp_t )
   ) i_apb_uart_wrap (
